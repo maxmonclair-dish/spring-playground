@@ -20,6 +20,7 @@ public class DemoApplicationTests {
 	@Autowired
 	private MockMvc mvc;
 
+	// testing /math/pi endpoint
 	@Test
 	public void testPiEndpoint() throws Exception {
 		this.mvc.perform(get("/math/pi").accept(MediaType.TEXT_PLAIN))
@@ -27,36 +28,37 @@ public class DemoApplicationTests {
 				.andExpect(content().string("3.141592653589793"));
 	}
 
+	// testing MathService class
 	@Test
-	public void testMathCalculateAdd() throws Exception {
+	public void testMathServiceCalculateAdd() throws Exception {
 		this.mvc.perform(get("/math/calculate/?operation=add&x=1&y=2"))
 				.andExpect(status().isOk())
 				.andExpect(content().string("1 + 2 = 3"));
 	}
 
 	@Test
-	public void testMathCalculateSubtract() throws Exception {
+	public void testMathServiceCalculateSubtract() throws Exception {
 		this.mvc.perform(get("/math/calculate/?operation=subtract&x=3&y=2"))
 				.andExpect(status().isOk())
 				.andExpect(content().string("3 - 2 = 1"));
 	}
 
 	@Test
-	public void testMathCalculateMultiply() throws Exception {
+	public void testMathServiceCalculateMultiply() throws Exception {
 		this.mvc.perform(get("/math/calculate/?operation=multiply&x=2&y=3"))
 				.andExpect(status().isOk())
 				.andExpect(content().string("2 x 3 = 6"));
 	}
 
 	@Test
-	public void testMathCalculateDivide() throws Exception {
+	public void testMathServiceCalculateDivide() throws Exception {
 		this.mvc.perform(get("/math/calculate/?operation=divide&x=4&y=2"))
 				.andExpect(status().isOk())
 				.andExpect(content().string("4 / 2 = 2"));
 	}
 
 	@Test
-	public void testMathSum() throws Exception {
+	public void testMathServiceSum() throws Exception {
 		this.mvc.perform(post("/math/sum/?n=2&n=3&n=6"))
 				.andExpect(status().isOk())
 				.andExpect(content().string("2 + 3 + 6 = 11"));
