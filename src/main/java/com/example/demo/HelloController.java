@@ -11,7 +11,4 @@ public class HelloController {
         return "Hello, Earthlings! Who's in charge here?";
     }
 
-    @GetMapping("/math/pi")
-    public String pi() { return "3.141592653589793"; }
-
 }
