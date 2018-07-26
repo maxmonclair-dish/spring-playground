@@ -3,7 +3,11 @@ package com.example.demo;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
+import java.math.MathContext;
 
 @RestController
 public class MathService {
@@ -67,6 +71,28 @@ public class MathService {
         String exp = x + "x" + y + "x" + z;
 
         return String.format("The volume of a %s rectangle is %s", exp, result);
+    }
+
+    @RequestMapping("/math/area/")
+    public String area(@RequestParam Map attr) throws Exception {
+        DecimalFormat decimalFormat = new DecimalFormat("#.#####");
+        String type = attr.get("type").toString();
+
+        if (type.equals("circle") && attr.containsKey("radius")) {
+            BigDecimal piSquared = new BigDecimal(this.pi()).pow(2, new MathContext(5));
+            BigDecimal rad = new BigDecimal(attr.get("radius").toString());
+            BigDecimal calc = piSquared.multiply(rad);
+
+            return String.format("Area of a circle with a radius of %s is %s", rad.toString(), decimalFormat.format(calc).toString());
+        } else if (type.equals("rectangle") && attr.containsKey("width") && attr.containsKey("height")) {
+            Integer w = Integer.parseInt(attr.get("width").toString());
+            Integer h = Integer.parseInt(attr.get("height").toString());
+            Integer calc = w * h;
+
+            return String.format("Area of a %s x %s rectangle is %s", w.toString(), h.toString(), decimalFormat.format(calc));
+        } else {
+            return "Is Invalid";
+        }
     }
 
 }

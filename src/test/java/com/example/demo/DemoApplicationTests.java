@@ -80,4 +80,26 @@ public class DemoApplicationTests {
 				.andExpect(content().string("The volume of a 6x7x8 rectangle is 336"));
 	}
 
+	// Unit 3, exercise 4 tests
+	@Test
+	public void testMathServiceAreaCircle() throws Exception {
+		this.mvc.perform(post("/math/area/?type=circle&radius=4"))
+				.andExpect(status().isOk())
+				.andExpect(content().string("Area of a circle with a radius of 4 is 39.4784"));
+	}
+
+	@Test
+	public void testMathServiceAreaRectangle() throws Exception {
+		this.mvc.perform(post("/math/area/?type=rectangle&width=4&height=7"))
+				.andExpect(status().isOk())
+				.andExpect(content().string("Area of a 4 x 7 rectangle is 28"));
+	}
+
+	@Test
+	public void testMathServiceAreaInvalid() throws Exception {
+		this.mvc.perform(post("/math/area/?type=rectangle&radius=5"))
+				.andExpect(status().isOk())
+				.andExpect(content().string("Is Invalid"));
+	}
+
 }
