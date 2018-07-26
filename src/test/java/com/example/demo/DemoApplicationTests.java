@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -62,6 +63,21 @@ public class DemoApplicationTests {
 		this.mvc.perform(post("/math/sum/?n=2&n=3&n=6"))
 				.andExpect(status().isOk())
 				.andExpect(content().string("2 + 3 + 6 = 11"));
+	}
+
+	// Unit 3, exercise 3 tests
+	@Test
+	public void testMathServiceVolumePost() throws Exception {
+		this.mvc.perform(post("/math/volume/3/4/5"))
+				.andExpect(status().isOk())
+				.andExpect(content().string("The volume of a 3x4x5 rectangle is 60"));
+	}
+
+	@Test
+	public void testMathServiceVolumePatch() throws Exception {
+		this.mvc.perform(patch("/math/volume/6/7/8"))
+				.andExpect(status().isOk())
+				.andExpect(content().string("The volume of a 6x7x8 rectangle is 336"));
 	}
 
 }
