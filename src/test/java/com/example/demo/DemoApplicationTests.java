@@ -163,6 +163,34 @@ public class DemoApplicationTests {
 				.andExpect(jsonPath("$.result", is(350)));
 	}
 
+	@Test
+	public void getFlightsTicketTotal2() throws Exception {
+
+		String json = getJSON("/tickets2.json");
+
+		MockHttpServletRequestBuilder request = post("/flights/tickets/total")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json);
+
+		this.mvc.perform(request)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.result", is(650)));
+	}
+
+	@Test
+	public void getFlightsTicketTotal3() throws Exception {
+
+		String json = getJSON("/tickets3.json");
+
+		MockHttpServletRequestBuilder request = post("/flights/tickets/total")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json);
+
+		this.mvc.perform(request)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.result", is(900)));
+	}
+
 	// utility for retrieving JSON
 	private String getJSON(String path) throws Exception {
 		URL url = this.getClass().getResource(path);
