@@ -7,15 +7,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -144,5 +146,26 @@ public class DemoApplicationTests {
 				.andExpect(jsonPath("$[1].Tickets[0].Passenger.FirstName", is("SomeOther")))
 				.andExpect(jsonPath("$[1].Tickets[0].Passenger.LastName", isEmptyOrNullString()))
 				.andExpect(jsonPath("$[1].Tickets[0].Price", is(400)));
+	}
+
+	//Unit 4, Exercise 3
+	@Test
+	public void getFlightsTicketTotal() throws Exception {
+
+		String json = getJSON("/tickets.json");
+
+		MockHttpServletRequestBuilder request = post("/flights/tickets/total")
+			.contentType(MediaType.APPLICATION_JSON)
+		    .content(json);
+
+		this.mvc.perform(request)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.result", is(350)));
+	}
+
+	// utility for retrieving JSON
+	private String getJSON(String path) throws Exception {
+		URL url = this.getClass().getResource(path);
+		return new String(Files.readAllBytes(Paths.get(url.getFile())));
 	}
 }
